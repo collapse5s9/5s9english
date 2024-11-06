@@ -1,5 +1,6 @@
 # Créez ce fichier dans votre projet: .github/workflows/deploy.yml
 name: Deploy React App
+
 on:
   push:
     branches: [ main ]
@@ -9,19 +10,24 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
       - name: Build
         run: npm run build
+        env:
+          CI: false
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
